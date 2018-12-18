@@ -1,0 +1,40 @@
+package com.mahendra.demo1.controllers;
+
+import java.util.List;
+
+import javax.websocket.server.PathParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mahendra.demo1.dao.ProductDAO;
+import com.mahendra.demo1.entities.Product;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+	@Autowired private ProductDAO dao;
+	
+	@GetMapping(value="/",produces="application/json")
+	public List<Product> getAll(){
+			return dao.getAll();
+	}
+	
+	@GetMapping(value="/{id}",produces="application/json")
+	public Product find(@PathParam("id") Integer id) {
+		return dao.findById(id);
+	}
+	
+	@PostMapping(value="/save",consumes="application/json")
+	public ResponseEntity<String> save(@RequestBody Product product) {
+		dao.save(product);
+		return new ResponseEntity<>("Done",HttpStatus.OK);
+	}
+}
