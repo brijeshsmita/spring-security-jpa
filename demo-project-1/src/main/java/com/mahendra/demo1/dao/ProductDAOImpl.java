@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
@@ -24,13 +25,13 @@ public class ProductDAOImpl implements ProductDAO {
 
 	@Override
 	public void save(Product product) {
-		
+		em.persist(product);
 	}
 
 	@Override
 	public List<Product> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Query q = em.createQuery("select p from Product p");
+		return q.getResultList();
 	}
 
 }
